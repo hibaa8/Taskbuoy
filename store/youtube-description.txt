@@ -1,0 +1,11 @@
+TITLE
+Focus Coach: A Little Less Drift | Chrome Extension
+
+DESCRIPTION
+Meet Focus Coach, a Chrome extension that helps you return to the work you chose.
+
+Start a focus session, keep a live timer on your page, get distraction reminders, and review your daily activity. Choose gentle nudges or automatic return, approve useful websites, and take planned breaks.
+
+This video shows the actual extension interface with illustrative demo records. Activity totals are estimates, not measures of mental attention. Optional camera cues are experimental and are not demonstrated or validated by this promotional video.
+
+After your Chrome Web Store listing is published, add its public listing URL here.
