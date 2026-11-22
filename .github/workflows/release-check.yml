@@ -1,0 +1,38 @@
+name: Release checks and screenshots
+on:
+  push:
+    paths:
+      - 'extension/**'
+      - 'tests/**'
+      - '.github/workflows/release-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Run deterministic tests
+        run: npm test
+      - name: Install browser test tools
+        run: |
+          npm install --no-save --package-lock=false playwright@1.62.1
+          npx playwright install --with-deps chromium
+          sudo apt-get update -qq
+          sudo apt-get install -y xdotool
+      - name: Check real extension and capture store screenshots
+        run: xvfb-run -a node tests/release-check.mjs
+      - name: Upload verification and screenshots
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: focus-coach-release-check
+          path: release-assets/
+          if-no-files-found: warn
+          retention-days: 14
