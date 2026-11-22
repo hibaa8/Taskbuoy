@@ -10,7 +10,6 @@ Actual extension screens with illustrative demo records:
 
 ![Focus Coach dashboard with daily time estimates](docs/screenshots/focus-dashboard.png)
 
-![Focus Coach in-page reminder on an example distracting website](docs/screenshots/distraction-reminder.png)
 
 ## Install from this repository
 
