@@ -15,10 +15,11 @@ try {
   const videoStatus = $('video-status');
   videoStatus.textContent = 'Loading the video player…';
   let receivedStatus = false;
-  const statusText = { ready: 'Video ready · starting muted.', playing: 'Playing · use the player controls for sound.', paused: 'Paused · press Play inside the player to continue.', blocked: 'Your browser paused autoplay. Press Play inside the player.', ended: 'Your short reset is complete. Choose your next small step.', waiting: 'Press Play inside the player if it has not started.', error: 'This video could not play here. Choose a different video in Settings or use the YouTube link.' };
+  const statusText = { ready: 'Video ready · starting muted.', playing: 'Playing · use the player controls for sound.', paused: 'Paused · press Play inside the player to continue.', blocked: 'Your browser paused autoplay. Press Play inside the player.', ended: 'Your short reset is complete. Choose your next small step.', waiting: 'Press Play inside the player if it has not started.', buffering: 'Buffering the video… Check your connection if this continues.', error: 'This video could not play here. Choose a different video in Settings or use the YouTube link.' };
   window.addEventListener('message', event => {
     if (event.origin !== playerOrigin || event.source !== iframe.contentWindow || event.data?.type !== 'FOCUS_VIDEO_STATUS') return;
-    const text = statusText[event.data.state]; if (!text) return;
+    if (!Object.hasOwn(statusText, event.data.state)) return;
+    const text = statusText[event.data.state];
     receivedStatus = true; videoStatus.dataset.state = event.data.state;
     videoStatus.textContent = text + (Number.isInteger(event.data.code) ? ` YouTube error ${event.data.code}.` : '');
   });

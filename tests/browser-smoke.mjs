@@ -34,6 +34,8 @@ try {
   await dashboard.locator('#start-form [name=title]').fill('Test the core focus loop');
   await dashboard.locator('#work-tab').selectOption(String(tabId));
   await dashboard.locator('#start-form button[type=submit]').click();
+  await dashboard.locator('#session-setup[open]').waitFor();
+  await dashboard.locator('#setup-confirm').click();
   await dashboard.locator('#session .timer').waitFor();
   assert.equal(await worker.evaluate(async () => (await chrome.tabs.query({ active: true, lastFocusedWindow: true }))[0].id), tabId);
   await distraction.bringToFront();
