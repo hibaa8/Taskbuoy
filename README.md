@@ -2,6 +2,14 @@
 
 A local Chrome extension that helps you return to a work intention. It now includes a visible side coach, in-page reminders, sound, configurable work sites, and an optional experimental camera coach.
 
+## A look inside
+
+Actual extension screens with illustrative demo records:
+
+![Focus Coach dashboard with daily time estimates](docs/screenshots/focus-dashboard.png)
+
+![Focus Coach in-page reminder on an example distracting website](docs/screenshots/distraction-reminder.png)
+
 ## Install from this repository
 
 ```sh
@@ -114,7 +122,11 @@ node tests/browser-smoke.mjs
 
 Set `CHROME_PATH` to use an existing Chromium executable. The smoke test uses a disposable profile and local request interception for test websites.
 
-**Not verified here:** the operating system blocks Chromium launch with a required socket operation denied. Real Chrome injection/rendering, system notification delivery, actual sound output, webcam permission and model inference, detection accuracy, hidden-camera-tab scheduling, video embedding, and service-worker suspension still need checks on your Mac. This is an unpacked development prototype.
+**Verified in GitHub Actions:** [release browser run](https://github.com/hibaa8/focus-coach/actions/runs/44995898285) passed all 40 deterministic tests and 12 real Chromium release checks. The browser checks exercise persistent settings, session creation, content-script injection, unmarked-site work classification, real grace-period reminders and the notification API, work allowances, breaks, automatic return and active-tab closure, offscreen audio playback, both local vision models, camera stop, and a real session deadline. Captures use a disposable demo profile at 1280 × 800. Download the screenshot and verification artifact from the run.
+
+The repeatable release workflow is in `.github/workflows/release-check.yml`; its browser scenario is `tests/release-check.mjs`. To run it locally after installing Playwright Chromium and `xdotool`, use `xvfb-run -a node tests/release-check.mjs` on Linux.
+
+**Still device-dependent / not established:** macOS notification presentation and physical speaker output, camera accuracy with real people or phones, hidden-camera-tab scheduling, external YouTube embedding/autoplay, and long-running service-worker suspension. The camera check uses a synthetic feed and establishes model loading and stream cleanup, not attention accuracy.
 
 ## Source layout
 

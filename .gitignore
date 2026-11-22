@@ -12,3 +12,7 @@ focus-coach-records*.json
 /IMPLEMENTATION_PLAN.md
 
 /THIRD_PARTY_NOTICES.md
+
+release-assets/
+
+/scripts/__pycache__/
