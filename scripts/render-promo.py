@@ -11,21 +11,21 @@ scenes=[
  {'seconds':6,'heading':'Catch the\nscroll.','caption':'A visible reminder.\nAn optional chime.\nA clear way back.','image':'02-distraction-reminder-1280x800.png','number':'02 / A GENTLE NUDGE'},
  {'seconds':6,'heading':'See where\nyour time goes.','caption':'Review your day.\nReflect on your progress.\nChoose your next step.','image':'01-focus-dashboard-1280x800.png','number':'03 / YOUR DAILY RHYTHM'},
  {'seconds':5,'heading':'Make it\nyour own.','caption':'Choose distracting sites.\nApprove useful ones.\nSet the support you need.','image':'03-focus-settings-1280x800.png','number':'04 / ON YOUR TERMS'},
- {'seconds':4,'heading':'One task.\nA little less drift.','caption':'Focus Coach for Chrome\nLocal records. No account required.'}
+ {'seconds':4,'heading':'One task.\nA little less drift.','caption':'Taskbuoy for Chrome\nLocal records. No account required.'}
 ]
 for i,scene in enumerate(scenes):
  for key in ['heading','caption']:(tmp/f'{i}-{key}.txt').write_text(scene[key])
- duration=scene['seconds'];args=['ffmpeg','-hide_banner','-loglevel','error','-y','-f','lavfi','-i',f'color=c=0xf6f5ef:s=1920x1080:r=30:d={duration}']
+ duration=scene['seconds'];args=['ffmpeg','-hide_banner','-loglevel','error','-y','-f','lavfi','-i',f'color=c=0xf4f5fc:s=1920x1080:r=30:d={duration}']
  filters=[]
  if scene.get('image'):
   args+=['-loop','1','-i',str(screens/scene['image'])]
-  filters+=['[1:v]scale=1216:760,setsar=1[screen]','[0:v]drawbox=x=628:y=185:w=1220:h=764:color=0x26382e@0.12:t=fill[shadow]','[shadow][screen]overlay=x=620:y=176:shortest=1[base]']
+  filters+=['[1:v]scale=1216:760,setsar=1[screen]','[0:v]drawbox=x=628:y=185:w=1220:h=764:color=0x202640@0.12:t=fill[shadow]','[shadow][screen]overlay=x=620:y=176:shortest=1[base]']
   x,y,size,cy=74,290,64,540
  else:
   filters+=['[0:v]null[base]'];x,y,size,cy=230,275,112,620
- filters.append(f"[base]drawtext=fontfile={font}:text='FOCUS COACH':fontsize=30:fontcolor=0x315942:x=74:y=64:alpha='min(t/0.4,1)',drawtext=fontfile={serif}:textfile={tmp}/{i}-heading.txt:fontsize={size}:line_spacing=16:fontcolor=0x27382e:x={x}:y={y}:alpha='min(t/0.5,1)',drawtext=fontfile={font}:textfile={tmp}/{i}-caption.txt:fontsize={30 if scene.get('image') else 38}:line_spacing=16:fontcolor=0x697860:x={x}:y={cy}:alpha='min(t/0.8,1)'[text]")
+ filters.append(f"[base]drawtext=fontfile={font}:text='TASKBUOY':fontsize=30:fontcolor=0x4846a3:x=74:y=64:alpha='min(t/0.4,1)',drawtext=fontfile={serif}:textfile={tmp}/{i}-heading.txt:fontsize={size}:line_spacing=16:fontcolor=0x202640:x={x}:y={y}:alpha='min(t/0.5,1)',drawtext=fontfile={font}:textfile={tmp}/{i}-caption.txt:fontsize={30 if scene.get('image') else 38}:line_spacing=16:fontcolor=0x656c89:x={x}:y={cy}:alpha='min(t/0.8,1)'[text]")
  if scene.get('image'):
-  filters.append(f"[text]drawtext=fontfile={font}:text='{scene['number']}':fontsize=19:fontcolor=0x798176:x=74:y=210,drawtext=fontfile={font}:text='Actual extension interface / demo data':fontsize=21:fontcolor=0x798176:x=620:y=960[finished]")
+  filters.append(f"[text]drawtext=fontfile={font}:text='{scene['number']}':fontsize=19:fontcolor=0x6a718d:x=74:y=210,drawtext=fontfile={font}:text='Actual extension interface / demo data':fontsize=21:fontcolor=0x6a718d:x=620:y=960[finished]")
  else:filters.append('[text]null[finished]')
  filters.append(f'[finished]fade=t=in:st=0:d=0.2,fade=t=out:st={duration-0.25}:d=0.25,format=yuv420p[video]')
  args+=['-filter_complex',';'.join(filters),'-map','[video]','-t',str(duration),'-an','-c:v','libx264','-preset','fast','-crf','19','-threads','2',str(tmp/f'scene-{i}.mp4')]
@@ -45,6 +45,6 @@ with wave.open(str(tmp/'original-soundtrack.wav'),'wb') as w:
   a*=min(1,t/.3)*min(1,(seconds-t)/1.0)
   frames.extend(struct.pack('<h',int(max(-1,min(1,a))*32767)))
  w.writeframes(frames)
-subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-y','-f','concat','-safe','0','-i',str(tmp/'concat.txt'),'-i',str(tmp/'original-soundtrack.wav'),'-map','0:v','-map','1:a','-c:v','copy','-c:a','aac','-b:a','160k','-shortest','-movflags','+faststart',str(out/'Focus_Coach_Promo_1080p.mp4')],check=True)
+subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-y','-f','concat','-safe','0','-i',str(tmp/'concat.txt'),'-i',str(tmp/'original-soundtrack.wav'),'-map','0:v','-map','1:a','-c:v','copy','-c:a','aac','-b:a','160k','-shortest','-movflags','+faststart',str(out/'Taskbuoy_Promo_1080p.mp4')],check=True)
 (out/'promo-storyboard.json').write_text(json.dumps({'durationSeconds':seconds,'width':1920,'height':1080,'fps':30,'scenes':scenes,'soundtrack':'Original synthesized music; no third-party footage or music.'},indent=2))
-print('Rendered',out/'Focus_Coach_Promo_1080p.mp4')
+print('Rendered',out/'Taskbuoy_Promo_1080p.mp4')

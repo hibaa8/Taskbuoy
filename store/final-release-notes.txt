@@ -1,4 +1,4 @@
-FOCUS COACH 0.2.3 — FINAL REVIEW
+TASKBUOY 0.2.4 — FINAL REVIEW
 
 Changed:
 - Every new session opens an editable settings review before its timer starts, in both popup and dashboard.
@@ -15,3 +15,5 @@ Verified locally: 43 deterministic tests and DOM smoke checks pass. Chrome multi
 Remaining limits: YouTube may refuse embedded playback (the automated environment returned error 150 for the chosen video), and browser autoplay may require pressing Play. Real playback must still be checked on the submitter's own Chrome; a local video or a guaranteed embeddable source would avoid dependence on YouTube. Camera accuracy and physical macOS notifications/speaker output are not established by synthetic Linux checks. No native VS Code, ChatGPT desktop, or other desktop-app tracking is included.
 
 The extension is saved as a Chrome Web Store draft; it has not been submitted or published.
+
+Rebrand: Taskbuoy name, original buoy icon, navy/periwinkle/amber colors. Existing storage and session identifiers preserved.

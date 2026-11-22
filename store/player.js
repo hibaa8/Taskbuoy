@@ -14,7 +14,7 @@ function unavailable(code) {
   show([101, 150].includes(code) ? 'The video owner does not allow embedded playback. Choose another video in settings.' : code === 100 ? 'This video is unavailable or private.' : code === 153 ? 'YouTube could not verify this player’s web origin.' : 'YouTube could not play this video. Try again or open it on YouTube.', 'error', code);
 }
 if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId || '')) {
-  show('Choose a valid YouTube video in Focus Coach settings.', 'error');
+  show('Choose a valid YouTube video in Taskbuoy settings.', 'error');
 } else {
   fallback.href = `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`;
   window.onYouTubeIframeAPIReady = () => {

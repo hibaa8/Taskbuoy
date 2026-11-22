@@ -1,12 +1,12 @@
-# Focus Coach
+# Taskbuoy
 
 *A little more intention. A little less drift.*
 
-A **local Chrome extension** for the “just one more video” moments. Choose what you want to work on, set your boundaries, and let Focus Coach help you come back.
+A **local Chrome extension** for the “just one more video” moments. Choose what you want to work on, set your boundaries, and let Taskbuoy help you come back.
 
 **Currently under review on the Chrome Web Store.** You can install it locally in the meantime.
 
-![Focus Coach dashboard with daily time estimates](docs/screenshots/focus-dashboard.png)
+![Taskbuoy dashboard with daily time estimates](docs/screenshots/focus-dashboard.png)
 
 *Actual interface with illustrative demo records.*
 
@@ -27,7 +27,7 @@ git clone https://github.com/hibaa8/focus-coach.git
 
 1. Open `chrome://extensions` and enable **Developer mode**.
 2. Click **Load unpacked** and select `focus-coach/extension`.
-3. Pin Focus Coach, open a work website, and start a session.
+3. Pin Taskbuoy, open a work website, and start a session.
 
 No build, server, account, or API key required. To update, run `git pull`, reload the extension, and refresh your website tabs.
 

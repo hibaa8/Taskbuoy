@@ -1,8 +1,8 @@
-FOCUS COACH — CHROME WEB STORE ASSET GUIDE
+TASKBUOY — CHROME WEB STORE ASSET GUIDE
 
 Use the PNG icon at 128 × 128 pixels. It matches the extension’s installed icon.
 Use the numbered app screenshots at 1280 × 800 pixels. They are captured from the actual interface in a disposable demo profile; sample records are illustrative.
-Upload Focus_Coach_Promo_1080p.mp4 to your own YouTube channel, then paste the resulting YouTube URL into the listing’s promotional video field. No YouTube upload is performed as part of preparing these files.
+Upload Taskbuoy_Promo_1080p.mp4 to your own YouTube channel, then paste the resulting YouTube URL into the listing’s promotional video field. No YouTube upload is performed as part of preparing these files.
 The video contains original synthesized audio and actual extension UI captures; no SRK footage or third-party music is included.
 Paste the short and detailed descriptions from store-description.txt. Camera features must be described as optional and experimental. Desktop app tracking is not included.
 
