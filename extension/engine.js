@@ -8,16 +8,17 @@ export const DEFAULT_SETTINGS = {
   sound: true,
   escalation: true,
   escalationAfter: 3,
-  videoId: 'E9lAeMz1DaM',
+  videoId: 'wnHW6o8WMas',
   cameraDelaySeconds: 15
 };
 export function emptyState() {
-  return { version: 3, settings: structuredClone(DEFAULT_SETTINGS), session: null, history: [], tasks: [], notice: '', camera: null, activeTabId: null, lastEvent: null, resetWindowId: null };
+  return { version: 4, settings: structuredClone(DEFAULT_SETTINGS), session: null, history: [], tasks: [], notice: '', camera: null, activeTabId: null, lastEvent: null, resetWindowId: null };
 }
 export function migrateState(state) {
   if (!state) return emptyState();
   if ((state.version ?? 1) < 3 && state.settings?.videoId === '0NV1KdWRHck') state.settings.videoId = DEFAULT_SETTINGS.videoId;
-  state.version = 3;
+  if ((state.version ?? 1) < 4 && state.settings?.videoId === 'E9lAeMz1DaM') state.settings.videoId = DEFAULT_SETTINGS.videoId;
+  state.version = 4;
   state.settings = { ...structuredClone(DEFAULT_SETTINGS), ...state.settings };
   state.camera ??= null;
   if (state.session) {

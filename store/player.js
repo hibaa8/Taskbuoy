@@ -20,7 +20,7 @@ if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId || '')) {
   window.onYouTubeIframeAPIReady = () => {
     player = new YT.Player('player', {
       host: 'https://www.youtube-nocookie.com', width: '100%', height: '100%', videoId,
-      playerVars: { autoplay: 1, mute: 1, playsinline: 1, rel: 0, end: 60, origin: location.origin },
+      playerVars: { autoplay: 1, mute: 1, playsinline: 1, rel: 0, origin: location.origin },
       events: {
         onReady() { show('Ready · starting muted', 'ready'); player.mute(); player.playVideo(); play.hidden = false; },
         onStateChange(event) {
@@ -43,10 +43,4 @@ if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId || '')) {
       show('If playback has not started, press Play or open the video on YouTube.', 'waiting');
     }
   }, 18000);
-  setInterval(() => {
-    if (!finished && player?.getCurrentTime?.() >= 60) {
-      finished = true; player.stopVideo(); play.hidden = true;
-      show('One-minute reset complete · return to your next small step', 'ended');
-    }
-  }, 500);
 }
