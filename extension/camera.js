@@ -1,5 +1,6 @@
 import { FaceLandmarker, ObjectDetector, FilesetResolver } from './vendor/vision_bundle.mjs';
 import { faceFeatures, calibration, observation } from './vision-signals.js';
+import { loadPhoneModel } from './model-loader.js';
 const $ = id => document.getElementById(id);
 let stream = null, faceModel = null, objectModel = null, baseline = null, samples = [], calibrating = true, running = false, starting = false;
 let session = null, timer = null, lastPhoneCheck = 0, lastObjects = null, failures = 0;
@@ -83,8 +84,10 @@ $('camera-start').addEventListener('click', async () => {
     });
     if (run !== generation) { loadedFace.close(); return; }
     faceModel = loadedFace;
+    const phoneModel = await loadPhoneModel(chrome.runtime.getURL('models/'));
+    if (run !== generation) return;
     const loadedObjects = await ObjectDetector.createFromOptions(files, {
-      baseOptions: { modelAssetPath: chrome.runtime.getURL('models/efficientdet_lite0.tflite'), delegate: 'CPU' },
+      baseOptions: { modelAssetBuffer: phoneModel, delegate: 'CPU' },
       runningMode: 'VIDEO', scoreThreshold: 0.55, categoryAllowlist: ['cell phone'], maxResults: 2
     });
     if (run !== generation) { loadedObjects.close(); return; }
