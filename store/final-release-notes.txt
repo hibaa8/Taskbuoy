@@ -1,0 +1,17 @@
+FOCUS COACH 0.2.3 — FINAL REVIEW
+
+Changed:
+- Every new session opens an editable settings review before its timer starts, in both popup and dashboard.
+- Save & start validates and saves preferences atomically with session creation. Cancel and invalid settings do not start a session or replace defaults.
+- Unsaved dashboard edits are offered in the review. Active sessions keep their reviewed snapshot.
+- The requested default video is https://www.youtube.com/watch?v=E9lAeMz1DaM. Settings and the pre-session review allow a custom video. Existing custom IDs are preserved; the legacy TED default is migrated once.
+- An isolated HTTPS player provides a web origin for YouTube embedding. Only the video ID is passed; session intentions, browsing history, and camera data are not sent.
+- Play, buffering, unavailable, and completion states are explicit. A failed video does not automatically redirect the reset panel to YouTube.
+- Old session reminders clear when a new session begins.
+- A privacy policy is bundled and linked from popup, dashboard footer, and camera setup. The policy footer identifies Hiba only, with no personal email or surname in its text.
+
+Verified locally: 43 deterministic tests and DOM smoke checks pass. Chrome multi-window work classification and the main focus flows passed real Chromium checks on GitHub. The final GitHub report passed 17 browser checks, including the handled fallback. A separate live YouTube playback check was unavailable (error 150), including on the direct HTTPS player. Evidence: https://github.com/hibaa8/focus-coach/actions/runs/45000430621
+
+Remaining limits: YouTube may refuse embedded playback (the automated environment returned error 150 for the chosen video), and browser autoplay may require pressing Play. Real playback must still be checked on the submitter's own Chrome; a local video or a guaranteed embeddable source would avoid dependence on YouTube. Camera accuracy and physical macOS notifications/speaker output are not established by synthetic Linux checks. No native VS Code, ChatGPT desktop, or other desktop-app tracking is included.
+
+The extension is saved as a Chrome Web Store draft; it has not been submitted or published.

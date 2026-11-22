@@ -9,6 +9,7 @@ Focus Coach helps you stay with the work you meant to do. Start a focus session,
 • Catch distracting browsing. Set a grace period and get a visible “Go back to work” reminder when it runs out.
 • Choose your level of support. Use gentle reminders or automatically return to your work tab. Optionally close the active distracting tab when you return.
 • Keep useful sites available. Unmarked active Chrome tabs count as working, and work-site allowances can override your distraction list.
+• Review before you begin. Configure reminders, site rules, sound, and video before the timer starts.
 • Keep your rhythm. See your session timer, hear optional chimes, and take planned breaks.
 • Understand your day. Review estimated work time, distracting browsing, weekly patterns, and what you actually finished.
 • Stay connected to your goals. Add deadlines, update remaining effort, and see simple daily pacing suggestions.
@@ -18,6 +19,6 @@ OPTIONAL CAMERA COACH
 Enable the camera only if you want it. On-device vision models provide experimental cues for head position, face absence, or a possible phone in view. These are estimates—not a measure of mental attention, eye contact, or proof of phone scrolling. The core browser features work without the camera.
 
 YOUR DATA, ON YOUR DEVICE
-No account or subscription is required. Session records stay in your Chrome profile. Camera frames are processed locally and are not recorded or uploaded. Playing a motivational video connects to YouTube.
+No account or subscription is required. Session records stay in your Chrome profile. Camera frames are processed locally and are not recorded or uploaded. Playing a motivational video connects to the isolated Focus Coach hosted player and YouTube. Playback depends on YouTube and may require pressing Play.
 
 Built for study sessions, writing, coding, and any task that deserves a little more space. Focus Coach tracks activity inside Chrome; it does not monitor other desktop apps.
