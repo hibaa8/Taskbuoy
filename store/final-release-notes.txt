@@ -1,4 +1,4 @@
-TASKBUOY 0.2.4 — FINAL REVIEW
+TASKBUOY 0.2.5 — FINAL REVIEW
 
 Changed:
 - Every new session opens an editable settings review before its timer starts, in both popup and dashboard.
@@ -17,3 +17,5 @@ Remaining limits: YouTube may refuse embedded playback (the automated environmen
 The extension is saved as a Chrome Web Store draft; it has not been submitted or published.
 
 Rebrand: Taskbuoy name, original buoy icon, navy/periwinkle/amber colors. Existing storage and session identifiers preserved.
+
+Camera refinement: bounded calibrated movement tolerance, blink guard and temporal cue filtering. Separate head-down and phone-plus-downward-gaze cues. Phone visibility alone is informational. No talking or microphone analysis. Synthetic tests verify cue logic, not real-world detection accuracy.

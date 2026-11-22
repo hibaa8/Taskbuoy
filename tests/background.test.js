@@ -140,6 +140,20 @@ test('stale camera samples cannot accumulate a sustained cue or bypass breaks', 
   await ok('BREAK'); for (let i = 0; i < 20; i++) { now += 1000; await cameraSample('phone-visible'); }
   assert.equal(stored.session.interventions, 0);
 });
+test('a visible phone alone never triggers a reminder or blocks work recovery', async () => {
+  reset(); await ok('START', { title: 'Work', durationMinutes: 25, tabId: 1 });
+  for (let i = 0; i < 25; i++) { now += 1000; await cameraSample('phone-visible'); }
+  assert.equal(stored.session.interventions, 0); assert.equal(stored.session.category, 'work');
+});
+test('related sustained downward cues share a timer but screen-facing recovery resets it', async () => {
+  reset(); await ok('START', { title: 'Work', durationMinutes: 25, tabId: 1 });
+  for (let i = 0; i < 10; i++) { now += 1000; await cameraSample(i % 2 ? 'head-down' : 'phone-down'); }
+  await cameraSample('ready');
+  for (let i = 0; i < 10; i++) { now += 1000; await cameraSample('head-down'); }
+  assert.equal(stored.session.interventions, 0);
+  for (let i = 0; i < 6; i++) { now += 1000; await cameraSample(i % 2 ? 'phone-down' : 'looking-down'); }
+  assert.equal(stored.session.interventions, 1);
+});
 test('repeated ignored reminders open one motivational reset with cooldown', async () => {
   reset(); await ok('SETTINGS', { domains: 'instagram.com', graceSeconds: 30, mode: 'gentle', escalationAfter: 2 });
   await ok('START', { title: 'Work', durationMinutes: 25, tabId: 1 }); activeId = 2; await ok('GET');
