@@ -65,6 +65,7 @@
     rest.textContent = onBreak ? 'Resume now' : '5-min break'; rest.onclick = () => request(onBreak ? 'RESUME' : 'BREAK');
   }
   function receive(next) {
+    if (data?.session?.id !== next.session?.id) { toast.hidden = true; toastUntil = 0; card.hidden = true; }
     data = next; receivedAt = Date.now();
     if (data.event && data.event.id !== lastEvent && data.isActiveTab) {
       lastEvent = data.event.id; toastUntil = Date.now() + 20000;

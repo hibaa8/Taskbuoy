@@ -158,6 +158,25 @@ async function reconcile(state) {
     } else s.recoveryStart = null;
   }
 }
+function validatedSettings(message, current) {
+      const graceSeconds = Number(message.graceSeconds);
+      if (!Number.isFinite(graceSeconds) || graceSeconds < 30 || graceSeconds > 600) throw new Error('Set a grace period between 30 and 600 seconds.');
+      if (!['gentle', 'automatic'].includes(message.mode)) throw new Error('Choose a valid intervention mode.');
+      const domains = [...new Set(String(message.domains ?? current.domains.join('\n')).split(/[\n,]+/).filter(v => v.trim()).map(normalizeDomain))];
+      if (domains.length > 100) throw new Error('Choose up to 100 distracting domains.');
+      const workDomains = [...new Set(String(message.workDomains ?? current.workDomains.join('\n')).split(/[\n,]+/).filter(v => v.trim()).map(normalizeDomain))];
+      if (workDomains.length > 100) throw new Error('Choose up to 100 work domains.');
+      const escalationAfter = Number(message.escalationAfter ?? current.escalationAfter);
+      const cameraDelaySeconds = Number(message.cameraDelaySeconds ?? current.cameraDelaySeconds);
+      if (!Number.isInteger(escalationAfter) || escalationAfter < 2 || escalationAfter > 10) throw Error('Escalation must be between 2 and 10 reminders.');
+      if (![10, 15, 30, 60].includes(cameraDelaySeconds)) throw Error('Choose a valid camera reminder delay.');
+      return { ...current, graceSeconds, domains, workDomains, mode: message.mode,
+        closeDistractingTabs: message.closeDistractingTabs ?? current.closeDistractingTabs,
+        sound: message.sound ?? current.sound, escalation: message.escalation ?? current.escalation,
+        escalationAfter, cameraDelaySeconds,
+        videoId: parseVideoId(message.videoUrl || current.videoId) };
+}
+
 async function mutate(message) {
   const state = await load();
   await reconcile(state);
@@ -172,7 +191,10 @@ async function mutate(message) {
       if (s) throw new Error('Finish the current session before starting another.');
       const ctx = await context();
       const tab = await chrome.tabs.get(message.tabId ?? ctx.tabId);
-      state.session = createSession({ id: crypto.randomUUID(), title: message.title, durationMinutes: Number(message.durationMinutes), tab, rules: state.settings, now, taskId: message.taskId });
+      const rules = message.settings ? validatedSettings(message.settings, state.settings) : state.settings;
+      const nextSession = createSession({ id: crypto.randomUUID(), title: message.title, durationMinutes: Number(message.durationMinutes), tab, rules, now, taskId: message.taskId });
+      state.settings = rules;
+      state.session = nextSession;
       state.notice = '';
       state.lastEvent = null;
       await returnToWork(state);
@@ -248,22 +270,7 @@ async function mutate(message) {
       break;
     }
     case 'SETTINGS': {
-      const graceSeconds = Number(message.graceSeconds);
-      if (!Number.isFinite(graceSeconds) || graceSeconds < 30 || graceSeconds > 600) throw new Error('Set a grace period between 30 and 600 seconds.');
-      if (!['gentle', 'automatic'].includes(message.mode)) throw new Error('Choose a valid intervention mode.');
-      const domains = [...new Set(message.domains.split(/[\n,]+/).filter(v => v.trim()).map(normalizeDomain))];
-      if (domains.length > 100) throw new Error('Choose up to 100 distracting domains.');
-      const workDomains = [...new Set(String(message.workDomains ?? state.settings.workDomains.join('\n')).split(/[\n,]+/).filter(v => v.trim()).map(normalizeDomain))];
-      if (workDomains.length > 100) throw new Error('Choose up to 100 work domains.');
-      const escalationAfter = Number(message.escalationAfter ?? state.settings.escalationAfter);
-      const cameraDelaySeconds = Number(message.cameraDelaySeconds ?? state.settings.cameraDelaySeconds);
-      if (!Number.isInteger(escalationAfter) || escalationAfter < 2 || escalationAfter > 10) throw Error('Escalation must be between 2 and 10 reminders.');
-      if (![10, 15, 30, 60].includes(cameraDelaySeconds)) throw Error('Choose a valid camera reminder delay.');
-      state.settings = { ...state.settings, graceSeconds, domains, workDomains, mode: message.mode,
-        closeDistractingTabs: message.closeDistractingTabs ?? state.settings.closeDistractingTabs,
-        sound: message.sound ?? state.settings.sound, escalation: message.escalation ?? state.settings.escalation,
-        escalationAfter, cameraDelaySeconds,
-        videoId: parseVideoId(message.videoUrl || state.settings.videoId) };
+      state.settings = validatedSettings(message, state.settings);
       break;
     }
     case 'OUTCOME': {

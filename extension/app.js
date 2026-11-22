@@ -1,10 +1,17 @@
 import { totals, slicesForDay, feedback, trendInsights, CATEGORIES } from './engine.js';
+import { createSessionSetup } from './session-setup.js';
 
 const $ = id => document.getElementById(id);
 const dashboard = document.body.dataset.page === 'dashboard';
 const labels = { work: 'Estimated work', distraction: 'Distracting browsing', unknown: 'Unclassified', away: 'Idle / outside Chrome', break: 'Planned break' };
 let state;
 let busy = false;
+let settingsDirty = false;
+const setup = createSessionSetup(async (session, settings) => {
+  await send({ type: 'START', ...session, settings });
+  settingsDirty = false;
+  render(); loadSettings();
+});
 function el(tag, className = '', text = '') { const node = document.createElement(tag); node.className = className; node.textContent = text; return node; }
 function duration(ms) { const m = Math.floor(ms / 60000); return m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : m ? `${m}m` : ms > 0 ? '<1m' : '0m'; }
 function displayError(message) { $('error').textContent = message; $('error').hidden = !message; }
@@ -155,9 +162,22 @@ async function populateTabs() {
   if (!tabs.length) $('work-tab').add(new Option('Open a website to use as your work tab', ''));
   else if (tabs.some(t => String(t.id) === selected)) $('work-tab').value = selected;
 }
-$('start-form').addEventListener('submit', event => {
-  event.preventDefault(); const data = Object.fromEntries(new FormData(event.target));
-  action({ type: 'START', ...data, tabId: Number(data.tabId), taskId: data.taskId || null });
+$('start-form').addEventListener('submit', async event => {
+  event.preventDefault(); if (busy) return;
+  const data = Object.fromEntries(new FormData(event.target));
+  busy = true; displayError('');
+  try {
+    await send({ type: 'GET' });
+    if (state.session) throw Error('Finish the current session before starting another.');
+    let settings = state.settings;
+    if (dashboard && settingsDirty) {
+      const form = $('settings-form');
+      settings = { ...settings, ...Object.fromEntries(new FormData(form)) };
+      for (const name of ['closeDistractingTabs', 'sound', 'escalation']) settings[name] = form.elements[name].checked;
+    }
+    setup.open({ ...data, tabId: Number(data.tabId), taskId: data.taskId || null }, settings);
+  } catch (e) { displayError(e.message); }
+  finally { busy = false; }
 });
 $('task-picker').addEventListener('change', event => {
   const task = state.tasks.find(t => t.id === event.target.value);
@@ -166,11 +186,13 @@ $('task-picker').addEventListener('change', event => {
 if (!dashboard) $('open-dashboard').addEventListener('click', () => chrome.runtime.openOptionsPage());
 else {
   $('today-date').textContent = new Date().toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase();
+  $('settings-form').addEventListener('input', () => { settingsDirty = true; $('saved').textContent = ''; });
+  $('settings-form').addEventListener('change', () => { settingsDirty = true; $('saved').textContent = ''; });
   $('settings-form').addEventListener('submit', async event => {
     event.preventDefault(); const data = Object.fromEntries(new FormData(event.target));
     for (const name of ['closeDistractingTabs', 'sound', 'escalation']) data[name] = event.target.elements[name].checked;
     await action({ type: 'SETTINGS', ...data });
-    if (!$('error').textContent) $('saved').textContent = 'Saved. Applies to your next session.';
+    if (!$('error').textContent) { settingsDirty = false; $('saved').textContent = state.session ? 'Saved for your next session. Current session keeps its reviewed settings.' : 'Saved. Review these settings when you start your session.'; }
   });
   $('test-alerts').addEventListener('click', () => action({ type: 'TEST_ALERTS' }));
   $('open-camera').addEventListener('click', () => action({ type: 'OPEN_CAMERA' }));
@@ -210,6 +232,7 @@ try {
       await send({ type: 'GET' });
       if (oldId !== state.session?.id) { render(); await populateTabs(); }
       else { renderSession(); renderTotals(); }
+      if (!settingsDirty) loadSettings();
     } catch (error) { displayError(error.message); }
   }, 5000);
 } catch (error) { displayError(error.message); }

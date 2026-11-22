@@ -26,8 +26,9 @@ for (const file of ['dashboard.html', 'popup.html']) {
   const state = structuredClone(base);
   state.tasks.push({ id: 'task', title: 'Vaylo demo', remainingMinutes: 60, deadline: '' });
   const chrome = { runtime: { sendMessage: async () => ({ ok: true, state }), openOptionsPage() {} }, tabs: { query: async () => [{ id: 1, url: 'https://work.example/', title: 'Work tab', active: true }] } };
-  const source = (await readFile(resolve(root, 'app.js'), 'utf8')).replace(/^import .*;\n/, 'const {totals,slicesForDay,feedback,trendInsights,CATEGORIES}=engine;\n');
-  await vm.runInContext(`(async()=>{${source}\n})()`, context(document, chrome));
+  const source = (await readFile(resolve(root, 'app.js'), 'utf8')).replace(/^import .*;$/gm, '') + '\n';
+  const bindings = 'const {totals,slicesForDay,feedback,trendInsights,CATEGORIES}=engine; ';
+  await vm.runInContext(`(async()=>{${bindings}${(await readFile(resolve(root, 'session-setup.js'), 'utf8')).replace('export function', 'function')}${source}\n})()`, context(document, chrome));
   assert.equal(document.getElementById('error').textContent, '', `${file}: no initialization error`);
   assert.match(document.getElementById('work-tab').textContent, /Work tab/);
   if (file === 'dashboard.html') {
@@ -53,3 +54,7 @@ listener({ type: 'FC_STATE', session, isActiveTab: true, event: { id: 'nudge', k
 assert.equal(shadow.querySelector('.toast').hidden, false); assert.match(shadow.querySelector('.toast').textContent, /Go back to work/);
 assert.equal(document.querySelectorAll('focus-coach-widget').length, 1);
 console.log('PASS: side widget renders, counts down, and displays an in-page nudge.');
+
+listener({ type: 'FC_STATE', session: { ...session, id: 'next-session' }, isActiveTab: true, event: null });
+assert.equal(shadow.querySelector('.toast').hidden, true);
+console.log('PASS: a new session clears the previous session reminder.');

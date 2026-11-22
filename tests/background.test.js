@@ -162,3 +162,23 @@ test('unmarked tabs accumulate work time without a distracting-site nudge', asyn
   assert.ok(state.session.slices.some(slice => slice.domain === 'unlisted.example' && slice.category === 'work' && slice.end - slice.start === 30000));
   focused = false; assert.equal((await ok('GET')).session.category, 'away');
 });
+
+test('reviewed session settings are saved and used atomically at START', async () => {
+  reset();
+  const settings = { domains: 'instagram.com', workDomains: 'youtube.com', graceSeconds: 180, mode: 'automatic', sound: false, closeDistractingTabs: false, escalation: false };
+  const state = await ok('START', { title: 'Reviewed session', durationMinutes: 25, tabId: 1, settings });
+  assert.equal(state.session.rules.graceSeconds, 180);
+  assert.equal(state.session.rules.mode, 'automatic');
+  assert.equal(state.session.rules.sound, false);
+  assert.deepEqual(state.session.rules.workDomains, ['youtube.com']);
+  assert.deepEqual(state.settings, state.session.rules);
+  await ok('SETTINGS', { ...settings, graceSeconds: 30, mode: 'gentle' });
+  assert.equal(stored.session.rules.graceSeconds, 180, 'running rules remain the reviewed snapshot');
+});
+test('invalid reviewed settings or session leave defaults unchanged and do not start', async () => {
+  reset(); const original = structuredClone(stored.settings);
+  const invalid = await send('START', { title: 'Review', durationMinutes: 25, tabId: 1, settings: { domains: 'instagram.com', graceSeconds: 1, mode: 'gentle' } });
+  assert.equal(invalid.ok, false); assert.equal(stored.session, null); assert.deepEqual(stored.settings, original);
+  const missingTitle = await send('START', { title: '', durationMinutes: 25, tabId: 1, settings: { domains: 'instagram.com', graceSeconds: 180, mode: 'automatic' } });
+  assert.equal(missingTitle.ok, false); assert.equal(stored.session, null); assert.deepEqual(stored.settings, original);
+});
