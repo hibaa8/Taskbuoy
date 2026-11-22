@@ -55,14 +55,37 @@ try {
   const workId = await worker.evaluate(async () => (await chrome.tabs.query({})).find(t => t.url === 'https://work.focus.test/').id);
   await dashboard.locator('#start-form [name=title]').fill('Demo · Write the project proposal');
   await dashboard.locator('#work-tab').selectOption(String(workId));
+  // Unsaved settings must be offered before a session starts.
+  await dashboard.locator('#settings-form [name=graceSeconds]').selectOption('60');
   await dashboard.locator('#start-form button[type=submit]').click();
+  await dashboard.locator('#session-setup[open]').waitFor();
+  assert.equal((await state()).session, null, 'Review must happen before the timer starts');
+  assert.equal(await dashboard.locator('#setup-form [name=graceSeconds]').inputValue(), '60');
+  await dashboard.locator('#setup-cancel').click();
+  assert.equal((await state()).session, null);
+  assert.equal((await state()).settings.graceSeconds, 30, 'Cancel must not save settings');
+  await dashboard.locator('#start-form button[type=submit]').click();
+  await dashboard.locator('#setup-form [name=domains]').fill('invalid.test/path');
+  await dashboard.locator('#setup-confirm').click();
+  await dashboard.locator('#setup-error:not([hidden])').waitFor();
+  assert.equal((await state()).session, null);
+  await dashboard.locator('#setup-form [name=domains]').fill('distraction.focus.test');
+  await dashboard.locator('#setup-form [name=graceSeconds]').selectOption('30');
+  await dashboard.locator('#setup-confirm').click();
   await waitUntil(async () => (await state()).session?.workTabId === workId, 'Session did not start');
   await waitUntil(async () => (await state()).session?.category === 'work', 'Work tab was not classified as work');
   await work.locator('focus-coach-widget').waitFor();
+  assert.equal((await state()).session.rules.graceSeconds, 30);
+  pass('Pre-session settings review, cancellation, validation, and immediate application');
   pass('Session form, work-tab activation, and content-script injection');
   const unmarked = await context.newPage(); await unmarked.goto('https://unmarked.focus.test/');
   await waitUntil(async () => (await state()).session?.category === 'work' && (await state()).session?.domain === 'unmarked.focus.test', 'Unmarked tab did not count as work');
   pass('Unmarked websites count as working'); await unmarked.close();
+  const otherWindow = await worker.evaluate(() => chrome.windows.create({ url: 'https://unmarked.focus.test/other-window', focused: true }));
+  await waitUntil(async () => (await state()).session?.domain === 'unmarked.focus.test' && (await state()).session?.category === 'work', 'Another Chrome window did not count as work');
+  await worker.evaluate(id => chrome.windows.remove(id), otherWindow.id);
+  await work.bringToFront();
+  pass('Work classification follows another Chrome window');
   await distraction.bringToFront();
   await waitUntil(async () => (await state()).session?.category === 'distraction', 'Distraction not detected');
   await waitUntil(async () => (await state()).session?.interventions >= 1, 'No reminder after the real grace period');
@@ -109,6 +132,38 @@ try {
   await waitUntil(async () => !(await state()).session, 'One-minute session did not complete', 90000);
   assert.equal((await state()).lastEvent.kind, 'complete');
   pass('Real session deadline and completion event');
+  const popup = await context.newPage(); await popup.setViewportSize({ width: 400, height: 600 });
+  await popup.goto(`chrome-extension://${id}/popup.html`);
+  await popup.locator('#start-form [name=title]').fill('Popup review');
+  await popup.locator('#work-tab').selectOption(String(workId));
+  await popup.locator('#start-form button[type=submit]').click();
+  await popup.locator('#session-setup[open]').waitFor();
+  assert.equal((await state()).session, null);
+  await popup.locator('#setup-cancel').click(); await popup.close();
+  pass('Popup requires a settings review and cancel leaves the timer stopped');
+  const policy = await context.newPage(); await policy.goto(`chrome-extension://${id}/privacy.html`);
+  assert.match(await policy.locator('footer').innerText(), /Provided by Hiba/);
+  assert.doesNotMatch(await policy.locator('body').innerText(), /Altaf|@gmail\.com/); await policy.close();
+  pass('Bundled privacy page opens and uses Hiba only');
+  const resetPage = await context.newPage(); await resetPage.goto(`chrome-extension://${id}/reset.html`);
+  const playerFrame = resetPage.frameLocator('iframe');
+  const frameUrl = await resetPage.locator('iframe').getAttribute('src');
+  assert.equal(new URL(frameUrl).origin, 'https://focus-coach-privacy-hiba.strollingpopcorn9.chatgpt.site');
+  assert.deepEqual([...new URL(frameUrl).searchParams.keys()], ['v'], 'Only the selected video ID may leave the extension');
+  if (process.env.FOCUS_LIVE_VIDEO === '1') {
+    await waitUntil(async () => {
+      const status = await resetPage.locator('#video-status').getAttribute('data-state');
+      const text = await resetPage.locator('#video-status').innerText();
+      if (status === 'error') throw Error(text);
+      if (['blocked', 'paused', 'waiting', 'ready'].includes(status)) {
+        const playButton = playerFrame.locator('#play');
+        if (await playButton.isVisible()) await playButton.click();
+      }
+      return status === 'playing';
+    }, 'Hosted YouTube player did not reach actual playback', 60000);
+    pass('Live YouTube video reaches playback inside the extension reset panel');
+  }
+  await resetPage.close();
   // Separate, explicitly synthetic data for store captures. It never touches a user profile.
   const demo = emptyState(); const now = Date.now();
   demo.settings.sound = false; demo.settings.escalation = false;
@@ -129,7 +184,7 @@ try {
   await command('START', { title: 'Demo · Write the project proposal', durationMinutes: 25, tabId: workId });
   await work.bringToFront();
   // Let the preceding completion toast expire before opening the coach controls.
-  await work.waitForTimeout(21000);
+  await work.waitForTimeout(1000);
   await work.locator('focus-coach-widget').click();
   await work.screenshot({ path: resolve(output, '04-focus-side-coach-1280x800.png') });
   await command('END');

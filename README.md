@@ -1,4 +1,4 @@
-# Focus Coach · v0.2.2
+# Focus Coach · v0.2.3
 
 A local Chrome extension that helps you return to a work intention. It now includes a visible side coach, in-page reminders, sound, configurable work sites, and an optional experimental camera coach.
 
@@ -33,6 +33,14 @@ For future updates, end your session, run `git pull` in the same clone, press **
 6. Open the dashboard. Set your work websites, distracting websites, mode, and sound preferences. Save, then start a new session.
 
 For a fresh installation: enable Developer mode on `chrome://extensions`, choose Load unpacked, select `focus-coach/extension`, then pin Focus Coach in the toolbar. No build, account, or API key is required.
+
+## Final release checks
+
+Before every new session, a settings review opens in both the popup and dashboard. Review or change the site lists, grace period, return mode, tab closure, sound, motivational video, and camera cue delay; the timer stays stopped until Save & start. Cancel saves nothing. Unsaved dashboard edits are included in the review. The worker validates and saves the selected settings atomically with session creation, so they apply immediately. Changes saved during an existing session apply to the next session.
+
+The reset video uses an isolated HTTPS player at `https://focus-coach-privacy-hiba.strollingpopcorn9.chatgpt.site/player.html`. This provides the HTTP web origin required by YouTube. Only the selected video ID is sent, never the session intention or records. The hosted page has no extension API access, and the parent accepts only player status messages from that exact frame and origin. The full hosted source is in `store/player.html`, `store/player.js`, and `store/player.css`. Use Play inside the player if autoplay is blocked. A private, removed, embedding-disabled, or network-blocked video still needs a different video or the explicit YouTube link. It does not automatically redirect the user.
+
+Chrome tabs across multiple Chrome windows are supported; VS Code, native ChatGPT, and other desktop apps are not monitored. That would need a separate native companion.
 
 ## What's new
 
