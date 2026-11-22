@@ -6,6 +6,8 @@ A **local Chrome extension** for the “just one more video” moments. Choose w
 
 **Currently under review on the Chrome Web Store.** You can install it locally in the meantime.
 
+[Demo video](https://www.youtube.com/watch?v=HbYviP8-unQ)
+
 ![Taskbuoy dashboard with daily time estimates](docs/screenshots/focus-dashboard.png)
 
 *Actual interface with illustrative demo records.*
