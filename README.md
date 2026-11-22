@@ -41,4 +41,4 @@ Motivational videos connect to the hosted player and YouTube. Playback depends o
 
 Run `npm test` for the automated suite.
 
-[Privacy policy](extension/privacy.html) · [Release notes & known limits](store/final-release-notes.txt) · [Browser checks](https://github.com/hibaa8/focus-coach/actions/runs/45000430621)
+[Privacy policy](extension/privacy.html) · [Release notes & known limits](store/final-release-notes.txt) · [Browser checks](https://github.com/hibaa8/focus-coach/actions/runs/45054421535)
