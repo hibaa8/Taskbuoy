@@ -1,4 +1,4 @@
-TASKBUOY 0.2.6 — FINAL REVIEW
+TASKBUOY 0.2.7 — FINAL REVIEW
 
 Changed:
 - Every new session opens an editable settings review before its timer starts, in both popup and dashboard.
