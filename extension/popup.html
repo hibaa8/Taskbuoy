@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Focus Coach</title><link rel="stylesheet" href="styles.css"></head>
+<body data-page="popup"><main class="popup">
+  <header><a class="brand" href="dashboard.html" target="_blank"><span class="brand-icon">◒</span> Focus Coach</a><span class="pill">ON DEVICE</span></header>
+  <div id="error" class="notice error" role="alert" hidden></div><div id="notice" class="notice" role="status" hidden></div>
+  <section id="session"></section>
+  <section id="start"><p class="eyebrow">MAKE A LITTLE SPACE</p><h1>One thing at a time.</h1><p class="muted">Choose an intention. We’ll help you come back to it.</p>
+    <form id="start-form"><label>What are you working on?<input name="title" required maxlength="160" placeholder="e.g. Finish my Vaylo demo"></label>
+    <div class="form-row"><label>Session length<select name="durationMinutes"><option value="15">15 minutes</option><option value="25" selected>25 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select></label><label>Link to a goal<select name="taskId" id="task-picker"><option value="">No goal yet</option></select></label></div>
+    <label>Return to this work tab<select id="work-tab" name="tabId" required></select></label>
+    <p id="mode-summary" class="small muted"></p><button class="primary full" type="submit">Start focusing <span>↗</span></button></form>
+  </section>
+  <section class="today-mini"><span class="eyebrow">TODAY SO FAR</span><div id="mini-stats"></div></section>
+  <footer><button id="open-dashboard" class="text-button">Open your dashboard ↗</button><span class="small muted">Private by default</span></footer>
+</main><script type="module" src="app.js"></script></body></html>
