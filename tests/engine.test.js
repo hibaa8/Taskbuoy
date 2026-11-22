@@ -14,17 +14,23 @@ test('host matching includes subdomains, never lookalike suffixes', () => {
   assert.equal(matchesHost('notyoutube.com', ['youtube.com']), false);
   assert.equal(matchesHost('youtube.com.evil.example', ['youtube.com']), false);
 });
-test('classification distinguishes explicitly allowed work, ambiguous sites, breaks, and away', () => {
+test('classification defaults unmarked tabs to work while respecting distractions, breaks, and away', () => {
   const s = session();
   assert.equal(classify(s, ctx, 0), 'work');
   assert.equal(classify(s, { ...ctx, url: 'https://instagram.com' }, 0), 'distraction');
-  assert.equal(classify(s, { ...ctx, tabId: 2 }, 0), 'unknown');
+  assert.equal(classify(s, { ...ctx, tabId: 2 }, 0), 'work');
+  assert.equal(classify(s, { ...ctx, tabId: 4, url: 'https://unlisted.example/' }, 0), 'work');
   assert.equal(classify(s, { ...ctx, focused: false }, 0), 'away');
   assert.equal(classify(s, { ...ctx, idle: 'locked' }, 0), 'away');
   s.allowedDomains.push('youtube.com');
   assert.equal(classify(s, { ...ctx, tabId: 3, url: 'https://youtube.com' }, 0), 'work');
   s.breakUntil = 1000;
   assert.equal(classify(s, { ...ctx, idle: 'locked' }, 100), 'break');
+});
+test('active Chrome internal pages count as work; missing observations remain unknown', () => {
+  const s = session();
+  assert.equal(classify(s, { ...ctx, tabId: 9, url: 'chrome://newtab/' }, 0), 'work');
+  assert.equal(classify(s, { ...ctx, tabId: undefined, url: '' }, 0), 'unknown');
 });
 test('distraction allowance accumulates across sites, interrupted by work', () => {
   const s = session();

@@ -153,3 +153,12 @@ test('web content receives only widget state and cannot read records or send cam
   const widget = await request('WIDGET_GET'); assert.equal(widget.ok, true); assert.ok(widget.widget); assert.equal(widget.state, undefined);
   assert.equal((await request('GET')).ok, false); assert.equal((await request('CLEAR')).ok, false); assert.equal((await request('CAMERA_SAMPLE')).ok, false);
 });
+test('unmarked tabs accumulate work time without a distracting-site nudge', async () => {
+  reset(); await ok('START', { title: 'Work', durationMinutes: 25, tabId: 1 });
+  tabs.set(4, { id: 4, windowId: 1, url: 'https://unlisted.example/' }); activeId = 4;
+  await ok('GET'); now += 30000; const state = await ok('GET');
+  assert.equal(state.session.category, 'work');
+  assert.equal(state.session.interventions, 0);
+  assert.ok(state.session.slices.some(slice => slice.domain === 'unlisted.example' && slice.category === 'work' && slice.end - slice.start === 30000));
+  focused = false; assert.equal((await ok('GET')).session.category, 'away');
+});

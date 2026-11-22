@@ -48,7 +48,8 @@ export function classify(session, context, now) {
   if (host && matchesHost(host, session.allowedDomains)) return 'work';
   if (host && matchesHost(host, session.rules.workDomains ?? [])) return 'work';
   if (host && matchesHost(host, session.rules.domains)) return 'distraction';
-  return 'unknown';
+  // Any observed, active Chrome tab is work unless explicitly classified as distracting.
+  return context.tabId != null ? 'work' : 'unknown';
 }
 export function createSession({ id, title, durationMinutes, tab, rules, now, taskId = null }) {
   if (!title?.trim()) throw new Error('Give this session an intention.');
@@ -133,7 +134,7 @@ export function feedback(summary, sessions) {
   const observed = summary.work + summary.distraction + summary.unknown;
   if (!observed) return 'Start a focus session to learn how your browsing time is spent.';
   if (summary.distraction > summary.work && summary.distraction > 120000) return 'Distracting browsing exceeded estimated work time. Try a shorter work block or automatic return for your next session.';
-  if (summary.unknown > observed * 0.35) return 'Much of this time is unclassified. Mark relevant websites as work during a session to make the next summary more useful.';
+  if (summary.unknown > observed * 0.35) return 'Some time remains unclassified, including older records or gaps such as sleep and missed updates. Unmarked active Chrome tabs now count as work by default.';
   if (!sessions.some(s => s.outcome)) return 'Your time is recorded. Add what you finished to a session so you can compare time spent with progress made.';
   return 'Review what you finished alongside your time breakdown, then choose one concrete next step for your next session.';
 }
