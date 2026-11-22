@@ -1,8 +1,8 @@
 # Focus Coach · v0.2.3
 
-A local Chrome extension that helps you return to a work intention. It now includes a visible side coach, in-page reminders, sound, configurable work sites, and an optional experimental camera coach.
+A  Chrome extension that helps you return to a work intention. It now includes a visible side coach, in-page reminders, sound, configurable work sites, and an optional experimental camera coach.
 
-The full privacy policy is bundled at `extension/privacy.html` and linked from the popup, dashboard footer, and camera setup page.
+Current under review for publication to Chrome.
 
 ## A look inside
 
