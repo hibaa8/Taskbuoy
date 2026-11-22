@@ -1,15 +1,47 @@
 {
   "manifest_version": 3,
   "name": "Focus Coach",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Choose an intention, catch distracting browsing, and return to your work. Your records stay on this device.",
   "minimum_chrome_version": "120",
-  "permissions": ["storage", "tabs", "idle", "alarms", "notifications", "offscreen", "scripting"],
-  "host_permissions": ["http://*/*", "https://*/*"],
-  "content_scripts": [{ "matches": ["http://*/*", "https://*/*"], "js": ["coach-widget.js"], "run_at": "document_idle" }],
-  "content_security_policy": { "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; frame-src https://www.youtube-nocookie.com;" },
-  "background": { "service_worker": "background.js", "type": "module" },
-  "action": { "default_popup": "popup.html", "default_title": "Focus Coach" },
+  "permissions": [
+    "storage",
+    "tabs",
+    "idle",
+    "alarms",
+    "notifications",
+    "offscreen",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "coach-widget.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; frame-src https://www.youtube-nocookie.com;"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Focus Coach"
+  },
   "options_page": "dashboard.html",
-  "icons": { "128": "icon.png" }
+  "icons": {
+    "128": "icon.png"
+  }
 }

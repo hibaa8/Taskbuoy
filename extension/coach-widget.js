@@ -56,7 +56,7 @@
     chip.classList.toggle('warn', distracting || cameraWarn);
     chipText.textContent = `${clock(ms)} · ${onBreak ? 'Break' : distracting ? `Return in ${clock(left)}` : 'Coach on'}`;
     title.textContent = s.title; timer.textContent = clock(ms);
-    status.textContent = onBreak ? 'Planned break · reminders paused' : distracting ? `Distracting website · return in ${clock(left)}` : data.isActiveTab && s.category === 'work' ? 'Approved work website' : 'Browsing monitored · other activity';
+    status.textContent = onBreak ? 'Planned break · reminders paused' : distracting ? `Distracting website · return in ${clock(left)}` : data.isActiveTab && s.category === 'work' ? 'Working · not marked as distracting' : 'Browsing monitored · other activity';
     progress.hidden = !distracting;
     fill.style.width = `${Math.min(100, since / (s.graceSeconds * 1000) * 100)}%`;
     camera.textContent = data.camera && data.camera.status !== 'off' ? `Camera: ${data.camera.detail || data.camera.status} · estimate` : 'Browser tracking on · camera off';

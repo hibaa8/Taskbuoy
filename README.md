@@ -1,4 +1,4 @@
-# Focus Coach · v0.2.0
+# Focus Coach · v0.2.1
 
 A local Chrome extension that helps you return to a work intention. It now includes a visible side coach, in-page reminders, sound, configurable work sites, and an optional experimental camera coach.
 
@@ -26,7 +26,7 @@ For a fresh installation: enable Developer mode on `chrome://extensions`, choose
 
 ## What's new
 
-- **Approved work websites:** a persistent list that applies across tabs, plus a one-session “This website is work” action. Work allowances take priority over the distraction list. Unknown sites stay unclassified, rather than automatically being treated as distracting.
+- **Approved work websites:** a persistent list that applies across tabs, plus a one-session “This website is work” action. Work allowances take priority over the distraction list. Unmarked active Chrome tabs count as work by default. Explicit work allowances can also override a listed distracting site.
 - **On-page coach:** a small monitoring icon and session countdown at the lower-right side of supported websites. Click it for controls. It distinguishes browser monitoring from camera monitoring.
 - **Visible reminders:** an in-page “Go back to work” card, alongside the operating-system notification. A suppressed OS notification does not prevent the in-page card from appearing.
 - **Close and return:** automatic mode activates the saved work tab, then closes the current distracting tab when this setting is enabled. The manual Return action also honors this setting. It does not close your work tab, approved sites, unclassified sites, or all other distracting tabs in the background. If the destination is unavailable, it leaves the source open and asks you to choose a work tab.
@@ -64,7 +64,7 @@ The camera uses MediaPipe Face Landmarker and EfficientDet-Lite0 locally. Frames
 
 ## Time accounting and goals
 
-Tracking runs only during a session. The selected work tab counts as estimated work while it remains on its selected hostname; approved domains also count. A website on the distraction list counts as distracting unless approved. Other sites are unclassified. Outside-Chrome and idle time is separate; it may include legitimate editor work or reading.
+Tracking runs only during a session. Every observed, active Chrome tab counts as estimated work unless its website is on the distracting list. Explicit work allowances override the distracting list. This applies across Chrome tabs and windows, including unmarked sites and Chrome internal pages. Time with no observed active tab stays unclassified. Outside-Chrome and idle time is separate; it may include legitimate editor work or reading.
 
 The distracting allowance accumulates across visits and resets on each website nudge. Breaks pause it. Time is updated on tab, window, idle, alarm, and UI events; a long unobserved gap over 65 seconds is conservatively unclassified. An idle signal reflects lack of recent computer input, not lack of attention. A browser restart archives the session rather than reusing old tab IDs.
 
@@ -95,7 +95,7 @@ cd focus-coach
 npm test
 ```
 
-**Verified in the build environment:** 38 accounting, worker integration with simulated Chrome APIs, migration, domain matching, closure protection, camera cue, reminder delay, sound-trigger, escalation, trend, and message-boundary tests pass. Optional DOM smoke checks also pass for popup/dashboard initialization and side-coach countdown/nudge rendering. SDK exports, model container structure, asset hashes, manifest/HTML references, and JavaScript syntax were checked.
+**Verified in the build environment:** 40 accounting, worker integration with simulated Chrome APIs, migration, domain matching, closure protection, camera cue, reminder delay, sound-trigger, escalation, trend, and message-boundary tests pass. Optional DOM smoke checks also pass for popup/dashboard initialization and side-coach countdown/nudge rendering. SDK exports, model container structure, asset hashes, manifest/HTML references, and JavaScript syntax were checked.
 
 Optional DOM checks:
 
