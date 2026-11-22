@@ -127,7 +127,10 @@ try {
   await dashboard.screenshot({ path: resolve(output, '03-focus-settings-1280x800.png') });
   await dashboard.evaluate(() => window.scrollTo(0, 0));
   await command('START', { title: 'Demo · Write the project proposal', durationMinutes: 25, tabId: workId });
-  await work.bringToFront(); await work.locator('focus-coach-widget').click();
+  await work.bringToFront();
+  // Let the preceding completion toast expire before opening the coach controls.
+  await work.waitForTimeout(21000);
+  await work.locator('focus-coach-widget').click();
   await work.screenshot({ path: resolve(output, '04-focus-side-coach-1280x800.png') });
   await command('END');
   assert.deepEqual(errors, [], `Browser UI exceptions: ${JSON.stringify(errors)}`);
