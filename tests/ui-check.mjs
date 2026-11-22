@@ -32,7 +32,7 @@ for (const file of ['dashboard.html', 'popup.html']) {
   assert.equal(document.getElementById('error').textContent, '', `${file}: no initialization error`);
   assert.match(document.getElementById('work-tab').textContent, /Work tab/);
   if (file === 'dashboard.html') {
-    assert.equal(document.querySelector('[name=videoUrl]').value, 'https://www.youtube.com/watch?v=E9lAeMz1DaM');
+    assert.equal(document.querySelector('[name=videoUrl]').value, 'https://www.youtube.com/watch?v=wnHW6o8WMas');
     assert.equal(document.querySelector('[name=closeDistractingTabs]').checked, true);
     assert.ok(document.getElementById('trend-insights').textContent.length > 0);
   }

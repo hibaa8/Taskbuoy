@@ -95,11 +95,19 @@ test('trend summaries rank distracting time using actual recorded domains', () =
 });
 
 test('new installs and legacy default upgrade use the requested motivational video without replacing a custom video', () => {
-  assert.equal(DEFAULT_SETTINGS.videoId, 'E9lAeMz1DaM');
+  assert.equal(DEFAULT_SETTINGS.videoId, 'wnHW6o8WMas');
   const legacy = migrateState({ version: 2, settings: { videoId: '0NV1KdWRHck' } });
-  assert.equal(legacy.settings.videoId, 'E9lAeMz1DaM');
+  assert.equal(legacy.settings.videoId, 'wnHW6o8WMas');
   const custom = migrateState({ version: 2, settings: { videoId: 'abcdefghijk' } });
   assert.equal(custom.settings.videoId, 'abcdefghijk');
   const intentionallyChosenOldVideo = migrateState({ version: 3, settings: { videoId: '0NV1KdWRHck' } });
   assert.equal(intentionallyChosenOldVideo.settings.videoId, '0NV1KdWRHck');
+});
+
+test('the SRK default migrates once while new-schema custom choices and active sessions are preserved', () => {
+  const old = migrateState({version:3,settings:{videoId:'E9lAeMz1DaM'},session:{rules:{videoId:'E9lAeMz1DaM'}}});
+  assert.equal(old.settings.videoId,'wnHW6o8WMas');
+  assert.equal(old.session.rules.videoId,'E9lAeMz1DaM');
+  assert.equal(migrateState({version:4,settings:{videoId:'E9lAeMz1DaM'}}).settings.videoId,'E9lAeMz1DaM');
+  assert.equal(migrateState({version:3,settings:{videoId:'abcdefghijk'}}).settings.videoId,'abcdefghijk');
 });

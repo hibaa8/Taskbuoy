@@ -173,7 +173,7 @@ try {
       await resetPage.screenshot({ path: resolve(output, 'video-unavailable.png') });
       assert.ok(['error', 'waiting', 'buffering', 'ready', 'blocked', 'paused'].includes(status));
       assert.ok(text.length > 0);
-      assert.equal(await resetPage.locator('#video-link').getAttribute('href'), 'https://www.youtube.com/watch?v=E9lAeMz1DaM');
+      assert.equal(await resetPage.locator('#video-link').getAttribute('href'), 'https://www.youtube.com/watch?v=wnHW6o8WMas');
       assert.ok(resetPage.url().startsWith('chrome-extension://'), 'A blocked video must never redirect the reset panel');
       pass('Unavailable video has a clear status, configurable URL, and explicit fallback without redirect');
       const direct = await context.newPage(); await direct.goto(frameUrl);

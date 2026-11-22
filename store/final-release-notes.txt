@@ -1,10 +1,10 @@
-TASKBUOY 0.2.5 — FINAL REVIEW
+TASKBUOY 0.2.6 — FINAL REVIEW
 
 Changed:
 - Every new session opens an editable settings review before its timer starts, in both popup and dashboard.
 - Save & start validates and saves preferences atomically with session creation. Cancel and invalid settings do not start a session or replace defaults.
 - Unsaved dashboard edits are offered in the review. Active sessions keep their reviewed snapshot.
-- The requested default video is https://www.youtube.com/watch?v=E9lAeMz1DaM. Settings and the pre-session review allow a custom video. Existing custom IDs are preserved; the legacy TED default is migrated once.
+- The requested default video is https://www.youtube.com/watch?v=wnHW6o8WMas. Settings and the pre-session review allow a custom video. Existing custom IDs are preserved; the previous default videos are migrated once.
 - An isolated HTTPS player provides a web origin for YouTube embedding. Only the video ID is passed; session intentions, browsing history, and camera data are not sent.
 - Play, buffering, unavailable, and completion states are explicit. A failed video does not automatically redirect the reset panel to YouTube.
 - Old session reminders clear when a new session begins.
@@ -19,3 +19,5 @@ The extension is saved as a Chrome Web Store draft; it has not been submitted or
 Rebrand: Taskbuoy name, original buoy icon, navy/periwinkle/amber colors. Existing storage and session identifiers preserved.
 
 Camera refinement: bounded calibrated movement tolerance, blink guard and temporal cue filtering. Separate head-down and phone-plus-downward-gaze cues. Phone visibility alone is informational. No talking or microphone analysis. Synthetic tests verify cue logic, not real-world detection accuracy.
+
+Motivational reset: user-selected full NO EXCUSES video (wnHW6o8WMas); no 60-second cutoff. Automatic opening after repeated ignored reminders remains enabled by default. YouTube/browser embedding and autoplay restrictions still apply. Separate product advertisement is 30 seconds.

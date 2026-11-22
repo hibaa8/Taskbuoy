@@ -1,0 +1,21 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
+const source = readFileSync(new URL('../store/player.js', import.meta.url), 'utf8');
+test('motivational player autostarts the chosen full video without a duration cutoff', () => {
+  const nodes = Object.fromEntries(['player-status','play','fallback'].map(id => [id, {hidden:true, addEventListener(){}}]));
+  let options, played=0, muted=0;
+  const timers=[], reports=[];
+  const window={parent:{postMessage(message){reports.push(message);}}};
+  const context={window, document:{getElementById:id=>nodes[id],createElement:()=>({}),head:{append(){}}},location:{search:'?v=wnHW6o8WMas',origin:'https://example.test'},URLSearchParams,setTimeout:fn=>timers.push(fn),YT:{Player:class{constructor(id, value){options=value;} mute(){muted++;} playVideo(){played++;}}}};
+  vm.runInNewContext(source,context); window.onYouTubeIframeAPIReady(); options.events.onReady();
+  assert.equal(options.videoId,'wnHW6o8WMas');
+  assert.equal(options.playerVars.autoplay,1);
+  assert.equal(Object.hasOwn(options.playerVars,'end'),false);
+  assert.equal(played,1); assert.equal(muted,1);
+  assert.equal(nodes.fallback.href,'https://www.youtube.com/watch?v=wnHW6o8WMas');
+  options.events.onStateChange({data:0});
+  assert.equal(reports.at(-1).state,'ended');
+  assert.doesNotMatch(source,/stopVideo|setInterval|getCurrentTime/);
+});
