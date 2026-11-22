@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Focus Coach",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Choose an intention, catch distracting browsing, and return to your work. Your records stay on this device.",
   "minimum_chrome_version": "120",
   "permissions": [
@@ -30,7 +30,7 @@
     }
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; frame-src https://www.youtube-nocookie.com;"
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; frame-src https://www.youtube-nocookie.com https://focus-coach-privacy-hiba.strollingpopcorn9.chatgpt.site;"
   },
   "background": {
     "service_worker": "background.js",
