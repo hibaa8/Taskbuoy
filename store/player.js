@@ -25,6 +25,7 @@ if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId || '')) {
         onReady() { show('Ready · starting muted', 'ready'); player.mute(); player.playVideo(); play.hidden = false; },
         onStateChange(event) {
           if (event.data === 1) { play.hidden = true; show('Playing · use the player controls for sound', 'playing'); }
+          else if (event.data === 3) { show('Buffering video…', 'buffering'); }
           else if (event.data === 2) { play.hidden = false; show('Paused · press Play to continue', 'paused'); }
           else if (event.data === 0) { finished = true; play.hidden = true; show('Reset complete · return to your next small step', 'ended'); }
         },
@@ -37,7 +38,7 @@ if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId || '')) {
   const api = document.createElement('script'); api.src = 'https://www.youtube.com/iframe_api';
   api.onerror = () => unavailable(); document.head.append(api);
   setTimeout(() => {
-    if (!player?.getPlayerState || player.getPlayerState() === -1) {
+    if (!finished && (!player?.getPlayerState || [-1, 3, 5].includes(player.getPlayerState()))) {
       play.hidden = !player?.playVideo; fallback.hidden = false;
       show('If playback has not started, press Play or open the video on YouTube.', 'waiting');
     }

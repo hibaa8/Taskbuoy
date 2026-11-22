@@ -93,3 +93,13 @@ test('trend summaries rank distracting time using actual recorded domains', () =
   const insights = trendInsights([{ slices: [{ start: 0, end: 120000, category: 'distraction', domain: 'instagram.com' }, { start: 120000, end: 150000, category: 'work', domain: 'github.com' }] }]);
   assert.deepEqual(insights.sites, [['instagram.com', 120000]]); assert.match(insights.notes[0], /2 minutes/);
 });
+
+test('new installs and legacy default upgrade use the requested motivational video without replacing a custom video', () => {
+  assert.equal(DEFAULT_SETTINGS.videoId, 'E9lAeMz1DaM');
+  const legacy = migrateState({ version: 2, settings: { videoId: '0NV1KdWRHck' } });
+  assert.equal(legacy.settings.videoId, 'E9lAeMz1DaM');
+  const custom = migrateState({ version: 2, settings: { videoId: 'abcdefghijk' } });
+  assert.equal(custom.settings.videoId, 'abcdefghijk');
+  const intentionallyChosenOldVideo = migrateState({ version: 3, settings: { videoId: '0NV1KdWRHck' } });
+  assert.equal(intentionallyChosenOldVideo.settings.videoId, '0NV1KdWRHck');
+});
