@@ -13,7 +13,7 @@
 
 ## Validation completed
 
-- 35 deterministic and simulated Chrome API tests pass.
+- 38 deterministic and simulated Chrome API tests pass.
 - Popup/dashboard and side-widget DOM smoke checks pass.
 - SDK exports, model file structure, asset hashes, syntax, and local manifest/HTML references verified.
 

@@ -10,11 +10,13 @@
 
 ## Model assets
 
-Google MediaPipe model distributions, bundled unchanged:
+Google MediaPipe model distributions, preserving the original model bytes:
 
 - Face Landmarker, float16 v1: https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task
 - EfficientDet-Lite0, float32 v1: https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite0/float32/1/efficientdet_lite0.tflite
 - Model documentation: https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker and https://developers.google.com/edge/mediapipe/solutions/vision/object_detector
+
+The EfficientDet model is stored in three `.bin` parts to fit upload limits. `extension/models/phone-model.json` records their order, sizes, and the SHA-256 of the original model. The loader reassembles and verifies those original bytes in memory before inference.
 
 `extension/MODEL_ASSETS.json` records the exact size and SHA-256 of every bundled model/runtime asset. See upstream documentation and its linked model cards for model descriptions and limitations. These models are general-purpose vision models; this project has not validated them for attention measurement.
 

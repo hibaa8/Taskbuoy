@@ -9,7 +9,7 @@ git clone https://github.com/hibaa8/focus-coach.git
 cd focus-coach
 ```
 
-Open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked**, and select the repository's `extension` folder. Pin Focus Coach in the toolbar. The camera models and runtime are included, so no build, package installation, model download, account, or API key is needed to use the extension.
+Open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked**, and select the repository's `extension` folder. Pin Focus Coach in the toolbar. The camera models and runtime are included (the phone model is assembled from verified bundled parts), so no build, package installation, model download, account, or API key is needed to use the extension.
 
 For future updates, end your session, run `git pull` in the same clone, press **Reload** on the extension card, and refresh your website tabs. Keeping the clone in the same location preserves the unpacked extension's identity and local records.
 
@@ -95,7 +95,7 @@ cd focus-coach
 npm test
 ```
 
-**Verified in the build environment:** 35 accounting, worker integration with simulated Chrome APIs, migration, domain matching, closure protection, camera cue, reminder delay, sound-trigger, escalation, trend, and message-boundary tests pass. Optional DOM smoke checks also pass for popup/dashboard initialization and side-coach countdown/nudge rendering. SDK exports, model container structure, asset hashes, manifest/HTML references, and JavaScript syntax were checked.
+**Verified in the build environment:** 38 accounting, worker integration with simulated Chrome APIs, migration, domain matching, closure protection, camera cue, reminder delay, sound-trigger, escalation, trend, and message-boundary tests pass. Optional DOM smoke checks also pass for popup/dashboard initialization and side-coach countdown/nudge rendering. SDK exports, model container structure, asset hashes, manifest/HTML references, and JavaScript syntax were checked.
 
 Optional DOM checks:
 
@@ -124,6 +124,7 @@ Set `CHROME_PATH` to use an existing Chromium executable. The smoke test uses a 
 - `audio.html` / `audio.js` / `chime.wav`: offscreen audio.
 - `camera.html` / `camera.js` / `vision-signals.js`: camera permission, local inference, calibration, and estimated cues.
 - `reset.html` / `reset.js`: configurable motivational video and return/break controls.
+- `model-loader.js`: joins the bundled phone-model parts and checks the original SHA-256 before inference.
 - `vendor/`, `models/`, `MODEL_ASSETS.json`: pinned SDK, model assets, and SHA-256 inventory.
 - `app.js`, popup/dashboard HTML, `styles.css`: settings, goals, history, and reports.
 
