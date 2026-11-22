@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Focus Coach",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Choose an intention, catch distracting browsing, and return to your work. Your records stay on this device.",
   "minimum_chrome_version": "120",
   "permissions": [
