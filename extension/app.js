@@ -17,7 +17,7 @@ function duration(ms) { const m = Math.floor(ms / 60000); return m >= 60 ? `${Ma
 function displayError(message) { $('error').textContent = message; $('error').hidden = !message; }
 async function send(message) {
   const result = await chrome.runtime.sendMessage(message);
-  if (!result?.ok) throw new Error(result?.error ?? 'Could not reach Focus Coach. Reload the extension and try again.');
+  if (!result?.ok) throw new Error(result?.error ?? 'Could not reach Taskbuoy. Reload the extension and try again.');
   state = result.state;
   return state;
 }
@@ -205,7 +205,7 @@ else {
     try {
       await send({ type: 'GET' });
       const blob = new Blob([JSON.stringify({ ...state, exportedAt: new Date().toISOString() }, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob); const link = el('a'); link.href = url; link.download = 'focus-coach-records.json'; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+      const url = URL.createObjectURL(blob); const link = el('a'); link.href = url; link.download = 'taskbuoy-records.json'; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
     } catch (error) { displayError(error.message); }
   });
   $('clear').addEventListener('click', async () => {

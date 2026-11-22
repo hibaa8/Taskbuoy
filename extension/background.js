@@ -3,7 +3,7 @@ import { emptyState, migrateState, createSession, advance, classify, shouldNudge
 let queue = Promise.resolve();
 function enqueue(job) {
   const result = queue.then(job);
-  queue = result.catch(error => console.error('Focus Coach:', error));
+  queue = result.catch(error => console.error('Taskbuoy:', error));
   return result;
 }
 async function load() { return migrateState((await chrome.storage.local.get('state')).state); }
@@ -230,7 +230,7 @@ async function mutate(message) {
     case 'OPEN_RESET': await openReset(state); break;
     case 'TEST_ALERTS': {
       state.activeTabId = (await context()).tabId;
-      await notify('fc-test', 'Go back to work', 'Focus Coach test notification. Your on-page coach also shows focus nudges.');
+      await notify('fc-test', 'Go back to work', 'Taskbuoy test notification. Your on-page coach also shows focus nudges.');
       state.lastEvent = { id: crypto.randomUUID(), at: now, kind: 'test', message: 'Go back to work · test alert' };
       await chime(state);
       const level = await chrome.notifications.getPermissionLevel?.();
