@@ -3,7 +3,7 @@ TASKBUOY — CHROME WEB STORE ASSET GUIDE
 Use the matching Taskbuoy buoy icon at 128 × 128 pixels.
 Use the current numbered screenshots at 1280 × 800 pixels. They show the actual Taskbuoy interface with illustrative demo records.
 
-The new 30-second energetic product ad must be made in Higgsfield, per the user's latest direction. Account connection is pending. The storyboard and narration are in store/ad/brief.md. Do not use the older Focus Coach promo or the earlier 31-second Taskbuoy promo for this revised advertisement. Upload the finished approved ad to the user's YouTube channel and use that URL for the listing's optional global promo field. Do not insert the in-app motivational video as the product advertisement.
+The new 30-second product advertisement is Taskbuoy_Ad_30s_RunComfy_1080p.mp4. It uses RunComfy-generated motion, voiceover, and music, with exact Taskbuoy screenshots and the original buoy mark composited on top. See store/ad/brief.md for the sequence and scripts/render-runcomfy-ad.py for rendering. Upload the approved MP4 to the user's YouTube channel, then use that URL for the listing's optional global promo field. The renderer does not publish to YouTube or submit the extension. The in-app motivational video is separate from the product advertisement.
 
 The in-app motivational reset uses the full selected video: https://www.youtube.com/watch?v=wnHW6o8WMas. There is no 60-second cutoff. It opens automatically after the configured ignored-reminder threshold, unless disabled. YouTube embedding and browser autoplay restrictions still apply.
 

@@ -1,25 +1,22 @@
-# Taskbuoy — 30-second Higgsfield product ad
+# Taskbuoy — 30-second product advertisement
 
-Status: ready for production; Higgsfield account connection pending. This is the product advertisement, separate from the full-length in-app motivational reset.
+Produced with RunComfy: three Seedance 1.0 Pro Fast 1080p motion clips, a HeyGen Voice narration, and an ACE-Step 1.5 instrumental. The final composition overlays the original Taskbuoy logo, exact app screenshots, and readable titles. Generated motion serves as an abstract backdrop.
 
-## Direction
+This advertisement is separate from the full-length in-app motivational reset.
 
-Energetic, playful, crisp product advertising. Navy #080c36, periwinkle #a6a5df, amber #ffb000, pale lavender #f4f5fc. Original Taskbuoy buoy logo. Large readable type, fast match cuts, rhythmic transitions, upbeat original or properly licensed audio. Use actual Taskbuoy screenshots; do not invent interface text, testimonials, statistics, or store approval badges. No Focus Coach branding. Landscape 1920×1080, exactly 30 seconds. No strobe effects.
-
-## Sequence
-
-| Time | Visual | Main copy |
+| Time | Message | Product visual |
 | --- | --- | --- |
-| 0–4s | Playful cascade of distracting browser tabs, then a decisive pause | One quick scroll. |
-| 4–7s | Buoy logo reveal on the beat, navy and amber | Meet Taskbuoy. |
-| 7–13s | Actual reminder screenshot with a controlled camera move to Return to work | Catch the drift. Come back. |
-| 13–18s | Actual side-coach timer and session controls | Make time for what matters. |
-| 18–23s | Actual dashboard, highlighting daily estimates and goals | Find your rhythm. |
-| 23–27s | Clean privacy statement and optional camera label | Local records. Your control. |
-| 27–30s | Taskbuoy logo and product name, strong final hold | Less drift. More done. Chrome extension. |
+| 0–4s | One quick scroll? | Energetic browser-inspired motion |
+| 4–8s | Meet Taskbuoy. | Original buoy mark |
+| 8–14s | Catch the drift. Come back. | Actual on-page reminder |
+| 14–20s | One task. Real momentum. | Actual side-coach timer |
+| 20–25s | Find your rhythm. | Actual daily dashboard with demo data |
+| 25–30s | Less drift. More done. | Taskbuoy logo and Chrome identity |
 
-## Voiceover
+Navy, periwinkle, and amber. Fast entrances, short crossfades, upbeat music ducked under the voiceover. Landscape 1920×1080, 30 fps, 30 seconds. H.264 MP4 with AAC audio.
 
-“One quick scroll. Then another. Sound familiar? Meet Taskbuoy, the Chrome extension that nudges you back to what matters. Set your intention. Catch distracting tabs. Return to your work, with timers, reminders, and a little motivation. See where your time goes. Keep your records on your device. Taskbuoy. Less drift. More done.”
+Narration: “One quick scroll. Then another. Sound familiar? Meet Taskbuoy, the Chrome extension that nudges you back to what matters. Set your intention. Catch distracting tabs. Get back to your work. Keep your timer in sight, and see where your time goes. Your records stay on your device. Taskbuoy. Less drift. More done.”
 
-The camera is optional and experimental. Avoid claiming mind-reading, attention measurement, or proven phone scrolling. Browser tracking covers Chrome, not other desktop apps. Demo records are illustrative. Motivational videos connect to the hosted player and YouTube.
+Run `python3 scripts/render-runcomfy-ad.py` with the generated media in `release-assets/runcomfy-ad/` and original captures in `release-assets/taskbuoy-delivery/`. Rendering does not submit or charge for generation. Publish the approved MP4 to YouTube, then add its URL to the optional store promo field. No store submission or YouTube publication is performed by the renderer.
+
+No testimonials, claimed attention accuracy, or approval badges are used. Work totals are illustrative browser-activity estimates. Camera processing is optional and experimental; the ad makes no gaze or phone-scrolling accuracy claims.
