@@ -128,4 +128,4 @@ Set `CHROME_PATH` to use an existing Chromium executable. The smoke test uses a 
 - `vendor/`, `models/`, `MODEL_ASSETS.json`: pinned SDK, model assets, and SHA-256 inventory.
 - `app.js`, popup/dashboard HTML, `styles.css`: settings, goals, history, and reports.
 
-Model/runtime sources and attribution are listed in `THIRD_PARTY_NOTICES.md`. The implementation roadmap is in `IMPLEMENTATION_PLAN.md`.
+The bundled MediaPipe runtime retains its upstream license and notices in [`extension/vendor/LICENSE`](extension/vendor/LICENSE).

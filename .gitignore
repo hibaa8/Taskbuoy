@@ -8,3 +8,7 @@ coverage/
 playwright-report/
 test-results/
 focus-coach-records*.json
+
+/IMPLEMENTATION_PLAN.md
+
+/THIRD_PARTY_NOTICES.md
