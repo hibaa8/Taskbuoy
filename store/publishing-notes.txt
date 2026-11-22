@@ -1,11 +1,12 @@
 TASKBUOY — CHROME WEB STORE ASSET GUIDE
 
-Use the PNG icon at 128 × 128 pixels. It matches the extension’s installed icon.
-Use the numbered app screenshots at 1280 × 800 pixels. They are captured from the actual interface in a disposable demo profile; sample records are illustrative.
-Upload Taskbuoy_Promo_1080p.mp4 to your own YouTube channel, then paste the resulting YouTube URL into the listing’s promotional video field. No YouTube upload is performed as part of preparing these files.
-The video contains original synthesized audio and actual extension UI captures; no SRK footage or third-party music is included.
-Paste the short and detailed descriptions from store-description.txt. Camera features must be described as optional and experimental. Desktop app tracking is not included.
+Use the matching Taskbuoy buoy icon at 128 × 128 pixels.
+Use the current numbered screenshots at 1280 × 800 pixels. They show the actual Taskbuoy interface with illustrative demo records.
 
-Keep your privacy disclosures consistent with the extension: records stay in the Chrome profile; the camera is optional and frames are processed locally; motivational video playback contacts YouTube.
+The new 30-second energetic product ad must be made in Higgsfield, per the user's latest direction. Account connection is pending. The storyboard and narration are in store/ad/brief.md. Do not use the older Focus Coach promo or the earlier 31-second Taskbuoy promo for this revised advertisement. Upload the finished approved ad to the user's YouTube channel and use that URL for the listing's optional global promo field. Do not insert the in-app motivational video as the product advertisement.
 
-Screenshots are 1280 × 800; the smaller accepted format is 640 × 400.
+The in-app motivational reset uses the full selected video: https://www.youtube.com/watch?v=wnHW6o8WMas. There is no 60-second cutoff. It opens automatically after the configured ignored-reminder threshold, unless disabled. YouTube embedding and browser autoplay restrictions still apply.
+
+Use Taskbuoy consistently in descriptions, images, captions, and reviewer instructions. Camera cues are optional and experimental; records stay in the Chrome profile. There is no tracking of other desktop apps. Keep all privacy disclosures consistent.
+
+Keep the Chrome Web Store item as a saved draft until the user reviews and submits it.

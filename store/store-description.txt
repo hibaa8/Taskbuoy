@@ -13,7 +13,7 @@ Taskbuoy helps you stay with the work you meant to do. Start a focus session, ch
 • Keep your rhythm. See your session timer, hear optional chimes, and take planned breaks.
 • Understand your day. Review estimated work time, distracting browsing, weekly patterns, and what you actually finished.
 • Stay connected to your goals. Add deadlines, update remaining effort, and see simple daily pacing suggestions.
-• Get a little encouragement. Optionally open a configurable motivational video after repeated reminders.
+• Get a little encouragement. Automatically open your chosen full-length motivational video after the configured number of ignored reminders. You can customize or disable this option.
 
 OPTIONAL CAMERA COACH
 Enable the camera only if you want it. On-device vision models allow natural movement around your calibrated screen position and provide experimental cues for sustained downward gaze, a lowered head, leaving the frame, or looking down with a possible phone in view. Brief glances are filtered. Talking and phone visibility alone do not trigger reminders. These are estimates—not a measure of mental attention, eye contact, or proof of phone scrolling. The core browser features work without the camera.

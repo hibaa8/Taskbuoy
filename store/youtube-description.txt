@@ -1,11 +1,15 @@
 TITLE
-Taskbuoy: A Little Less Drift | Chrome Extension
+Taskbuoy | Less Drift. More Done.
 
 DESCRIPTION
-Meet Taskbuoy, a Chrome extension that helps you return to the work you chose.
+One quick scroll. Then another. Sound familiar?
 
-Start a focus session, keep a live timer on your page, get distraction reminders, and review your daily activity. Choose gentle nudges or automatic return, approve useful websites, and take planned breaks.
+Meet Taskbuoy, a local Chrome extension that helps you get back to what matters. Set your intention, catch distracting tabs, keep your timer in sight, and see where your time goes.
 
-This video shows the actual extension interface with illustrative demo records. Activity totals are estimates, not measures of mental attention. Optional camera cues are experimental and are not demonstrated or validated by this promotional video.
+Focus sessions. Visible reminders. Optional automatic return. Goals, reflections, and local activity estimates. Optional experimental camera cues. Your records stay on your device.
 
-After your Chrome Web Store listing is published, add its public listing URL here.
+A quick look at Taskbuoy: less drift, more done.
+
+Demo records are illustrative. Camera cues and work-time totals do not measure mental attention. Browser tracking covers Chrome, not other desktop apps. Motivational videos connect to the hosted player and YouTube.
+
+Add the public Chrome Web Store URL after publication.
