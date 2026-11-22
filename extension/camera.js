@@ -1,10 +1,11 @@
 import { FaceLandmarker, ObjectDetector, FilesetResolver } from './vendor/vision_bundle.mjs';
-import { faceFeatures, calibration, observation } from './vision-signals.js';
+import { faceFeatures, calibration, observation, createCueFilter } from './vision-signals.js';
 import { loadPhoneModel } from './model-loader.js';
 const $ = id => document.getElementById(id);
 let stream = null, faceModel = null, objectModel = null, baseline = null, samples = [], calibrating = true, running = false, starting = false;
 let session = null, timer = null, lastPhoneCheck = 0, lastObjects = null, failures = 0;
 let generation = 0;
+let filterCue = createCueFilter();
 const video = $('camera-preview');
 async function report(status, detail) {
   const result = await chrome.runtime.sendMessage({ type: 'CAMERA_SAMPLE', status, detail, sessionId: session?.id });
@@ -36,6 +37,7 @@ async function step() {
     session = current;
     $('camera-session').textContent = `Session: ${session.title}. Sustained cues trigger a reminder after approximately ${session.rules.cameraDelaySeconds} seconds.`;
     if (session.breakUntil > Date.now()) {
+      filterCue = createCueFilter();
       status('On a planned break', 'Camera preview is still on; analysis and reminders are paused.');
       await report('ready', 'Analysis paused during your break.');
     } else if (video.readyState >= 2) {
@@ -47,8 +49,8 @@ async function step() {
         if (feature) samples.push(feature);
         if (samples.length >= 16) { baseline = calibration(samples); calibrating = false; }
       }
-      const cue = calibrating ? { status: 'calibrating', detail: `Face the screen: calibration ${samples.length}/16 samples.` } : observation(face, lastObjects, baseline);
-      status(cue.status === 'ready' ? 'Screen-facing estimate' : cue.status.replaceAll('-', ' '), cue.detail);
+      const cue = filterCue(calibrating ? { status: 'calibrating', detail: `Look around your normal screen area: calibration ${samples.length}/16 samples. Small natural movements are welcome.` } : observation(face, lastObjects, baseline), timestamp);
+      status(cue.status === 'ready' || cue.status === 'phone-visible' ? 'Screen-facing estimate' : cue.status.replaceAll('-', ' '), cue.detail);
       await report(cue.status, cue.detail);
     }
     failures = 0;
@@ -93,6 +95,7 @@ $('camera-start').addEventListener('click', async () => {
     if (run !== generation) { loadedObjects.close(); return; }
     objectModel = loadedObjects;
     calibrating = true; samples = []; baseline = null; failures = 0; running = true;
+    lastObjects = null; lastPhoneCheck = 0; filterCue = createCueFilter();
     $('camera-stop').disabled = false; $('camera-calibrate').disabled = false;
     stream.getVideoTracks()[0].addEventListener('ended', () => stop(), { once: true });
     step();
@@ -100,7 +103,7 @@ $('camera-start').addEventListener('click', async () => {
   finally { starting = false; }
 });
 $('camera-stop').addEventListener('click', stop);
-$('camera-calibrate').addEventListener('click', () => { samples = []; baseline = null; calibrating = true; });
+$('camera-calibrate').addEventListener('click', () => { samples = []; baseline = null; calibrating = true; lastObjects = null; lastPhoneCheck = 0; filterCue = createCueFilter(); });
 $('camera-return').addEventListener('click', async () => {
   const result = await chrome.runtime.sendMessage({ type: 'RETURN' });
   if (!result.ok || result.state.notice) showError(result.error || result.state.notice);

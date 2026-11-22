@@ -1,4 +1,5 @@
 import { emptyState, migrateState, createSession, advance, classify, shouldNudge, normalizeDomain, hostOf, matchesHost, parseVideoId } from './engine.js';
+import { isCameraConcern } from './vision-signals.js';
 
 let queue = Promise.resolve();
 function enqueue(job) {
@@ -151,7 +152,7 @@ async function reconcile(state) {
         if (escalated && state.resetWindowId != null) await chrome.windows.update(state.resetWindowId, { focused: true });
       }
     }
-    const cameraConcern = state.camera && now - state.camera.at < 6000 && ['looking-down', 'looking-away', 'phone-visible', 'no-face'].includes(state.camera.status);
+    const cameraConcern = state.camera && now - state.camera.at < 6000 && isCameraConcern(state.camera.status);
     if (s.category === 'work' && !cameraConcern) {
       s.recoveryStart ??= now;
       if (now - s.recoveryStart >= 30000) s.ignoredNudges = 0;
@@ -238,11 +239,12 @@ async function mutate(message) {
       break;
     }
     case 'CAMERA_SAMPLE': {
-      const statuses = ['ready', 'looking-down', 'looking-away', 'no-face', 'phone-visible', 'off', 'error', 'calibrating'];
+      const statuses = ['ready', 'looking-down', 'head-down', 'looking-away', 'no-face', 'phone-down', 'phone-visible', 'off', 'error', 'calibrating'];
       if (!statuses.includes(message.status)) throw Error('Invalid camera observation.');
-      const same = state.camera?.status === message.status && now - state.camera.at < 6000;
+      const downCues = ['looking-down', 'head-down', 'phone-down'];
+      const same = (state.camera?.status === message.status || (downCues.includes(state.camera?.status) && downCues.includes(message.status))) && now - state.camera.at < 6000;
       state.camera = { status: message.status, detail: String(message.detail ?? '').slice(0, 160), at: now, since: same ? state.camera.since : now };
-      if (s && message.sessionId === s.id && s.breakUntil <= now && !['off', 'error', 'calibrating', 'ready'].includes(message.status)) {
+      if (s && message.sessionId === s.id && s.breakUntil <= now && isCameraConcern(message.status)) {
         const elapsed = now - state.camera.since;
         if (elapsed >= s.rules.cameraDelaySeconds * 1000 && now - (s.lastCameraNudgeAt ?? 0) >= 60000) {
           s.lastCameraNudgeAt = now;

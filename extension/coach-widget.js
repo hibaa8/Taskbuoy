@@ -52,7 +52,7 @@
     const distracting = data.isActiveTab && s.category === 'distraction' && !onBreak;
     const since = s.distractionSinceNudge + (distracting ? Math.min(6000, Date.now() - receivedAt) : 0);
     const left = Math.max(0, s.graceSeconds * 1000 - since);
-    const cameraWarn = data.camera && !['off', 'ready', 'calibrating', 'error'].includes(data.camera.status);
+    const cameraWarn = data.camera && !['off', 'ready', 'calibrating', 'error', 'phone-visible'].includes(data.camera.status);
     chip.classList.toggle('warn', distracting || cameraWarn);
     chipText.textContent = `${clock(ms)} · ${onBreak ? 'Break' : distracting ? `Return in ${clock(left)}` : 'Coach on'}`;
     title.textContent = s.title; timer.textContent = clock(ms);
