@@ -1,0 +1,23 @@
+{
+  "format": 1,
+  "name": "EfficientDet-Lite0 float32 v1",
+  "size": 13836895,
+  "sha256": "40338edf5ec70d43e318b0a716a84d4564cd1802759a7a07170c7e43796dbf58",
+  "parts": [
+    {
+      "file": "efficientdet_lite0.part1.bin",
+      "size": 5242880,
+      "sha256": "59ad54d6263c7b956d0bfcc076b78ced6cc6f0fe1d443f8d6ada93bf5ad34064"
+    },
+    {
+      "file": "efficientdet_lite0.part2.bin",
+      "size": 5242880,
+      "sha256": "b470f2b0ac1a80dc772f3c35f0cea67807f859ed7b27441a4125ce2d49298ab3"
+    },
+    {
+      "file": "efficientdet_lite0.part3.bin",
+      "size": 3351135,
+      "sha256": "447c6af009f1f25e231c41e9bb03ce09982341170e2fe2b9807dedf2d6e7a6b8"
+    }
+  ]
+}
