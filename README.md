@@ -4,7 +4,7 @@
 
 A **local Chrome extension** for the “just one more video” moments. Choose what you want to work on, set your boundaries, and let Taskbuoy help you come back.
 
-**Currently under review on the Chrome Web Store.** You can install it locally in the meantime.
+[Download the chrome extension](https://chromewebstore.google.com/detail/taskbuoy/odjgedpakoclbjdnlghpfanokjkdnmgk?hl=en)
 
 [Demo video](https://www.youtube.com/watch?v=HbYviP8-unQ)
 
